@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    {{>header}}
+    <p>In index page</p>
+    <form action="">
+        <input type="text">
+        <input type="submit" >
+    </form>
+    <p id="info"></p>
+    <p id="error"></p>
+    {{>footer}}
+    
+    
+    <script>
+
+        const f = document.querySelector('form');
+        const v = document.querySelector('input');
+        const info = document.getElementById('info');
+        const error = document.getElementById('error');
+        info.textContent="Loading...";
+        error.textContent="";
+        f.addEventListener('submit',(e)=>{
+            e.preventDefault();
+            fetch('http://localhost:3000/weather?address='+v.value).then(res=>{
+                res.json().then(data=>{
+                    if(data.error){
+                        error.textContent= data.error;
+                    }
+                    else{
+                        info.textContent = "address: "+data.address
+                        error.textContent = " temp: "+data.temp;
+                    }
+                })
+            });
+
+        })
+        
+    </script>
+</body>
+</html>
